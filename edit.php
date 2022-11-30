@@ -12,29 +12,35 @@
 
             if(mysqli_num_rows($result)>0) {
                 $row = mysqli_fetch_assoc($result);
-                echo $stu_class=$row['sclass'];
-                $sql2="SELECT * FROM studentclass WHERE cid = {$stu_class}";
+                $stu_class=$row['sclass'];
+                $sql2="SELECT * FROM studentclass";
                 $result2 = mysqli_query($conn, $sql2) or die("query failed2");
-                $row2 = mysqli_fetch_assoc($result2);
-
         ?>
             <label>Name</label>
-            <input type="hidden" name="sid" value="<?php $stu_id?>" />
-            <input type="text" name="sname" value="<?php $row['sname'];?>" />
+            <input type="hidden" name="sid" value="<?php echo $stu_id?>" />
+            <input type="text" name="sname" value="<?php echo $row['sname'];?>" />
         </div>
         <div class="form-group">
             <label>Address</label>
-            <input type="text" name="saddress" value="<?php $row['saddress'];?>" />
+            <input type="text" name="saddress" value="<?php echo $row['saddress'];?>" />
         </div>
         <div class="form-group">
             <label>Class</label>
             <select name="sclass">
-            <option value="<?php echo $row['sclass'];?>"><?php echo $row2['cname'];?></option>
+                <?php 
+                while($row2 = mysqli_fetch_assoc($result2)) {
+                    if($row2[cid]==$row[sclass]) {
+                ?>
+                <option value="<?php echo $row2['cid'];?>" selected><?php echo $row2['cname'];?> </option>
+                <?php } else {?>
+                <option value="<?php echo $row2['cid'];?>"><?php echo $row2['cname'];?></option>
+                <?php }
+        }?>
             </select>
         </div>
         <div class="form-group">
             <label>Phone</label>
-            <input type="text" name="sphone" value="<?php $row['sphone'];?>" />
+            <input type="text" name="sphone" value="<?php echo $row['sphone'];?>" />
         </div>
         <input class="submit" type="submit" value="Update" />
         <?php } else {
